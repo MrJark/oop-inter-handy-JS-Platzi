@@ -1,0 +1,35 @@
+
+Un poco de teoría.
+Las variables junto con sus nombres en JS se guardan en la memoria stack, mientras que los abjetos se guardan en en una memoria a parte llamada heap
+
+En el stack tenemos dos tipos de datos para una misma variable. El nombre de la variable, que es cuando la inicializamos, como la vamos a llamar y el valor de la variables.
+
+En los objetos, la inicialización si se guarda en el stack con su nombre pero el valor de la variable y en la parte de los valores simplemente es un 'pointer' que apunta hacia donde de verdad se guarda su valor, en el heap, solo es para los objetos.
+
+Entonces cuando quermos modificar un objeto copiado, no podemos hacerlo de una manera normal ya que lo que estamos modificando es la información en el heap pero el pointer de ambos, la original y la cipia, son los mismos, por tanto, si modifico uno se modifica todo.
+
+    *Dato: da igual como creemos el objeto, si con let, const o var ya que al estar trabajando con objetos, no estamos modificando en si la variable sino el objeto, lo que hay en su interior por tanto no interfiere
+
+Ej: 
+
+    const obj1 = {
+        a: "a",
+        b: "b",
+    };
+
+    const obj2 = {};
+    for (prop in obj1) {
+        obj2[prop] = obj1[prop];
+    };
+Esta es la manera para poder modificar un objeto copia de otro sin que interfieran entre ellos. Salvo si tenemos objetos dentro de objetos, en este caso si se modifica el valor del objeto que está dentro del padre
+
+Una solucio a esto es: .create()
+    Ej:
+        obj4 =  Object.create(obj1);
+Este afecta la modificación del objeto original a la copia pero no de la copia al original ya que crea las modificaciones como si fueran nuevas caracteríasticas manteniendo las originales en la parte de __proto__
+
+Con los siguientes métodos, JSON.stringify() y JSON.parse(), podemos crear objetos sin que se modifiquen los padres pero no podemos modificar funciones dentro de estos objetos ya que estos métodos omiten dichas funciones, no la leen
+
+    const stringfiedComplexObj = JSON.stringify(obj1); //esto lo quenos hace es convertir un objeto en un string
+    const obj5 = JSON.parse(stringfiedComplexObj); //esto es el contrario de la anterior, nos convierte un string en un objeto 
+

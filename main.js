@@ -34,3 +34,22 @@ Object.defineProperty(
 
     Object.seal(juan); //esta nos permite que nuestras propiedades no se puedan eliminar. Me pone configurable como false
     Object.freeze(juan); // esta además de poner como configurable como false, también me pone writable y por tanto, tampoco nos permite modificar las propiedades
+
+
+//Resolución del problema de la copia de objetos
+
+const obj1 = {
+    a: "a",
+    b: "b",
+};
+
+const obj2 = {};
+for (prop in obj1) {
+    obj2[prop] = obj1[prop];
+}//esta forma para solucionar la copia y modificación de los objetos funciona solo cuando hay objetos "simples", es decir, cuando no hay objetos dentro de otros objetos. Si los hubiera, al modificar uno, se me modificaría el otro tb
+
+obj3 =  Object.assign({}, obj1);
+obj4 =  Object.create(obj1); //el .create() afecta la modificación del objeto original a la copia pero no de la copia al padre ya que crea las modificaciones como si fueran nuevas caracteríasticas 
+
+const stringfiedComplexObj = JSON.stringify(obj1); //esto lo quenos hace es convertir un objeto en un string
+const obj5 = JSON.parse(stringfiedComplexObj); //esto es el contrario de la anterior, nos convierte un string en un objeto 
