@@ -53,3 +53,73 @@ obj4 =  Object.create(obj1); //el .create() afecta la modificación del objeto o
 
 const stringfiedComplexObj = JSON.stringify(obj1); //esto lo quenos hace es convertir un objeto en un string
 const obj5 = JSON.parse(stringfiedComplexObj); //esto es el contrario de la anterior, nos convierte un string en un objeto 
+
+
+//RECURSIVIDAD
+
+// function recursiva(parametro){
+//     if() {
+
+//     } else {
+
+//     }
+// }
+
+// const numeritos = [0,1,2,3,4,5,6,7,8,9,10,2,39,58,189,395];
+// // let numerito = 0;
+// // for (let index = 0; index < numeritos.length; index++) {
+// //     numerito = numeritos[index];
+// //     console.log( {index, numerito} );
+// // }
+
+// function recursiva(numbersArray) {
+//     if(numbersArray.lenght != 0) {
+//         const firstNum = numbersArray[0];
+//         console.log(firstNum);
+
+//         numbersArray.shift();
+//         recursiva(numbersArray);
+//     }
+// }
+
+//deep copy con recursividad 
+//esto lo que nos ayuda es que por muchos métodos quetengamos dentro de los objetos, van a funcionar hagamos lasa copias que hagamos
+
+function isObject (subject) { //funcion para validad si el objeto es un objeto
+    return typeof subject == "object";
+};
+
+function isArray (subject) { //funcion para validar si el subject es un array
+    return Array.isArray(subject);
+};
+
+function deepCopy () { //dentro del () ponemos el obj1 que es el que querriamos copiar
+    let copySubject;
+
+    const subjectIsArray = isArray(subject);
+    const subjectIsObject = isObject(subject);
+
+    if(subjectIsArray) {
+        copySubject = []; //si es una rray le ponemos los []
+    } else if (subjectIsObject) {
+        copySubject = {};// si es un objeto le ponemos {}
+    } else {
+        return subject;//si no es ni objeto ni array me lo devuelve tal cual era
+    }
+
+    for (key in subject) { //key es el valor, la asignación y con este ciclo loq ue hacemos es llevar a la función deepCopy lo valores dentro del subject para que valide si son arrays u objetos y que los muestre y así poder tener estos objetos y arrays a la vista
+        const keyIsObject = isObject(subject[key]);
+
+        if (keyIsObject) {
+            copySubject[key] = deepCopy(subject[key]);
+        } else {
+            if (subjectIsArray) {
+                copySubject.push(subject[key]);
+            } else {
+                copySubject[key] = subject 
+            }
+        }
+    }
+
+    return copySubject;
+}
