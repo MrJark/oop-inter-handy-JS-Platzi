@@ -172,8 +172,12 @@ function createStudent({ //el parámetro que vamos a definir es un objeto así e
     learningPath = [],
 
 } = {}) { // este = {} nos dice que por defecto el objeto que vamos a enviar es un objeto vacio así si un estudiante no nos imprime nada, no nos dará error
-    return {
-        name,
+
+    const private = {
+        "_name": name, //el guión bajo es la convención para que sean propiedades privasdas
+    };
+
+    const public = {
         email,
         age,
         socialMedia: {
@@ -184,8 +188,25 @@ function createStudent({ //el parámetro que vamos a definir es un objeto así e
         },
         approvedCourses,
         learningPath,
+        readName () {
+            return private["_name"];
+        },
+        changeName (newName) {
+            private["_name"] = newName;
+        },
     };
-}
+
+    Object.defineProperty(public, "readName", {
+        writable: false,
+        configurable: false,
+    }); //el problema de esto es que con el polimorfismo no podemos editar esto
+
+    Object.defineProperty(public, "changeName", {
+        writable: false,
+        configurable: false,
+    }); //no podemos editarlos con el polimorfismo
+    return public;
+};
 
 const mary = createStudent({
     age: 32,
