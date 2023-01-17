@@ -152,3 +152,45 @@ juan.name = "Juanito";
 Object.isSealed(juan);
 Object.isFrozen(juan);
 //Estas dos propiedades lo que me dan son valores buleanos, es decir, true or false. La propiedad .isSealed() no dice si nuestro objeto, juan, está protegido contra las eliminaciones de sus propiedades (cosa que conseguimos que sea true gracias al .seal() ). Mientras que el .inFrozen() nos da su buleano depensiendo de si tiene la propiedad .freeze() nuestro objeto, juan, la cual nos hace que no puedan ser modificados los valores de sus propiedades.
+
+
+//Factory pattern y RORO
+
+function requiredParams (param) { //creamos esta función para decirle al usuario cunado entre que los prametros email y name son obligatorios ya que es la forma de validar que es un estudiante
+    throw new Error(param + " es obligatorio");
+};
+
+function createStudent({ //el parámetro que vamos a definir es un objeto así el orden en que enviemos los datos no va a importar
+    name = requiredParams("name"), //para "obligarle" a que no esté vacio
+    email = requiredParams("email"),//para "obligarle" a que no esté vacio
+    age,
+    twitter,
+    facebook,
+    instagram,
+    github,
+    approvedCourses = [],
+    learningPath = [],
+
+} = {}) { // este = {} nos dice que por defecto el objeto que vamos a enviar es un objeto vacio así si un estudiante no nos imprime nada, no nos dará error
+    return {
+        name,
+        email,
+        age,
+        socialMedia: {
+            twitter,
+            facebook,
+            github,
+            instagram,
+        },
+        approvedCourses,
+        learningPath,
+    };
+}
+
+const mary = createStudent({
+    age: 32,
+    name: "Mery",
+    email: "mery@mery.com",
+    twitter: "/mery_1"
+});
+const mariano = createStudent(); //este nos dará un error porque no le hemos dado ni un nombre ni un email

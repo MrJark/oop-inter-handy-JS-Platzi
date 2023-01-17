@@ -33,3 +33,8 @@ Con los siguientes métodos, JSON.stringify() y JSON.parse(), podemos crear obje
     const stringfiedComplexObj = JSON.stringify(obj1); //esto lo quenos hace es convertir un objeto en un string
     const obj5 = JSON.parse(stringfiedComplexObj); //esto es el contrario de la anterior, nos convierte un string en un objeto 
 
+---------------------------
+
+Factory pattern y RORO
+
+Son dos patrones que nos vana a ayudar a crear moldes de objetos a partir de funciones y no de clases u objetos literales con el deep copy y demás métodos
