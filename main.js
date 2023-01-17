@@ -188,24 +188,34 @@ function createStudent({ //el parámetro que vamos a definir es un objeto así e
         },
         approvedCourses,
         learningPath,
-        readName () {
-            return private["_name"];
-        },
-        changeName (newName) {
+        // readName () {
+        //     return private["_name"];
+        // },
+        // changeName (newName) {
+        //     private["_name"] = newName;
+        // },
+    },
+    get name() {
+        return private["_name"];
+    },
+    set name(newName) {
+        if (newName.lenght != 0) {
             private["_name"] = newName;
-        },
-    };
+        } else {
+            console.warn("Tu nombre debe tener al menos 1 caracter");
+        }
+    },
 
-    Object.defineProperty(public, "readName", {
-        writable: false,
-        configurable: false,
-    }); //el problema de esto es que con el polimorfismo no podemos editar esto
+    // Object.defineProperty(public, "readName", {
+    //     writable: false,
+    //     configurable: false,
+    // }); //el problema de esto es que con el polimorfismo no podemos editar esto
 
-    Object.defineProperty(public, "changeName", {
-        writable: false,
-        configurable: false,
-    }); //no podemos editarlos con el polimorfismo
-    return public;
+    // Object.defineProperty(public, "changeName", {
+    //     writable: false,
+    //     configurable: false,
+    // }); //no podemos editarlos con el polimorfismo
+    // return public;
 };
 
 const mary = createStudent({
