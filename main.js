@@ -160,6 +160,34 @@ function requiredParams (param) { //creamos esta función para decirle al usuari
     throw new Error(param + " es obligatorio");
 };
 
+function createLearningPaths({
+    name = requiredParams("name"),
+    courses = [],
+}) {
+    const private = {
+        "_name": name,
+        "_courses": courses,
+    };
+
+    const public = {
+        get name() {
+            return private["_name"];
+        },
+        set name(newName) {
+            if (newName.lenght != 0) {
+                private["_name"] = newName;
+            } else {
+                console.warn("Tu nombre debe tener al menos 1 caracter");
+            }
+        },
+        get courses() {
+            return private["_courses"];
+        },//quitamos el set porque no podemos añadir cursos a las rutas porque no somos los profesores sino los alumnos
+    };
+
+    return public;
+}
+
 function createStudent({ //el parámetro que vamos a definir es un objeto así el orden en que enviemos los datos no va a importar
     name = requiredParams("name"), //para "obligarle" a que no esté vacio
     email = requiredParams("email"),//para "obligarle" a que no esté vacio
@@ -170,11 +198,11 @@ function createStudent({ //el parámetro que vamos a definir es un objeto así e
     github,
     approvedCourses = [],
     learningPath = [],
-
 } = {}) { // este = {} nos dice que por defecto el objeto que vamos a enviar es un objeto vacio así si un estudiante no nos imprime nada, no nos dará error
 
     const private = {
         "_name": name, //el guión bajo es la convención para que sean propiedades privasdas
+        "_learningPath": learningPath,
     };
 
     const public = {
@@ -187,24 +215,42 @@ function createStudent({ //el parámetro que vamos a definir es un objeto así e
             instagram,
         },
         approvedCourses,
-        learningPath,
         // readName () {
         //     return private["_name"];
         // },
         // changeName (newName) {
         //     private["_name"] = newName;
         // },
-    },
-    get name() {
-        return private["_name"];
-    },
-    set name(newName) {
-        if (newName.lenght != 0) {
-            private["_name"] = newName;
-        } else {
-            console.warn("Tu nombre debe tener al menos 1 caracter");
-        }
-    },
+        get name(){
+            return private["_name"];
+        },
+        set name(newName) {
+            if (newName.lenght != 0){
+                private["_name"] = newName;
+            } else {
+                console.warn("Tu nombre debe tener al menos 1 caracter");
+            }
+        },
+        get learningPath() {
+            return private["_learningPath"];
+        },
+        set learningPath(newLP) {
+            if(!newLP.name) {
+                console.warn("Tu LP no tiene la propiedad name");
+                return;
+            }
+            if (!newLP.courses) {
+                console.warn("Tu LP no tiene una lista de courses");
+                return;
+            }
+            if (!isArray(newLP.courses)) {
+                console.warn("Tu LP no tiene una lista de courses");
+                return;
+            }
+            private["_learningPath"].push(newLP);
+        },
+    
+    };
 
     // Object.defineProperty(public, "readName", {
     //     writable: false,
@@ -216,8 +262,8 @@ function createStudent({ //el parámetro que vamos a definir es un objeto así e
     //     configurable: false,
     // }); //no podemos editarlos con el polimorfismo
     // return public;
+    return public;
 };
-
 const mary = createStudent({
     age: 32,
     name: "Mery",
