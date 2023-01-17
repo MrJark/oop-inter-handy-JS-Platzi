@@ -123,3 +123,32 @@ function deepCopy () { //dentro del () ponemos el obj1 que es el que querriamos 
 
     return copySubject;
 }
+
+//abstracción y encapsulamiento
+
+//objeto literal
+const basicStudent = {
+    name: undefined,
+    email: undefined,
+    age: undefined,
+    approvedCourses: undefined,
+    learningPath: undefined,
+    socialMedia: {
+        twitter: undefined,
+        instagram: undefined,
+        facebook: undefined,
+        github: undefined,
+    },
+};
+
+const juan = deepCopy(basicStudent);
+// Object.defineProperty(juan, "name", {
+//     value: "Juanito",
+//     configurable: false, //nos obliga a no poder borrar la propiedad name
+// });
+Object.seal(juan)//con esta propiedad nos podemos evitar la propiedad .definedProperty() y si queremos modificar el mombre o cualquier otra propiedad solo tenemos que hacer lo siguiente:
+juan.name = "Juanito";
+
+Object.isSealed(juan);
+Object.isFrozen(juan);
+//Estas dos propiedades lo que me dan son valores buleanos, es decir, true or false. La propiedad .isSealed() no dice si nuestro objeto, juan, está protegido contra las eliminaciones de sus propiedades (cosa que conseguimos que sea true gracias al .seal() ). Mientras que el .inFrozen() nos da su buleano depensiendo de si tiene la propiedad .freeze() nuestro objeto, juan, la cual nos hace que no puedan ser modificados los valores de sus propiedades.
