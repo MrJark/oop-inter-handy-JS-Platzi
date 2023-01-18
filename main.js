@@ -224,17 +224,20 @@ function Student({ ////borramos el create del LearningPath para los métodos pú
 
 
     if(isArray(learningPaths)){
-        this.learningPaths = [];
+        this._learningPaths = []; //_ porque queremos hacerlo privado
+        for (learningPathIndex in learningPaths){
+            this.learningPaths = learningPaths[learningPathIndex];
+        }
+        
     };
 
-    for (learningPathIndex in learningPaths){
-        if(learningPaths[learningPathIndex] instanceof learningPath) {
-            this.learningPaths.push(learningPaths[learningPathIndex]);
+    // for (learningPathIndex in learningPaths){
+    //     if(learningPaths[learningPathIndex] instanceof learningPath) {
+    //         this._learningPaths.push(learningPaths[learningPathIndex]);
 
-        }
-    }
+    //     }
+    // }
 
-    
     //Lo comentamos porque vamos a trabajar con los métodos privados
     // const private = {
     //     "_name": name, //el guión bajo es la convención para que sean propiedades privasdas
@@ -300,8 +303,22 @@ function Student({ ////borramos el create del LearningPath para los métodos pú
     // // }); //no podemos editarlos con el polimorfismo
     // // return public;
     // return public;
-
 };
+
+//le mandamos Student.prototype porque es en  el prototype donde vamos a crear los get y set
+Object.defineProperty(Student.prototype, "learningPaths", {
+    get() {
+        return this._learningPaths;
+    },
+    set(newLp){
+        if(learningPaths[learningPathIndex] instanceof learningPath) {
+            this._learningPaths.push(newLp);
+
+        } else {
+            console.warn("Some Lps is not an instance of LearningPath prototype");
+        }
+    },
+})
 
 const escuelaWeb = new learningPath({ name: "Escuela de WebDev" });
 const escuelaData = new learningPath({ name: "Escuela de Data Science" });
