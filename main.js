@@ -127,6 +127,84 @@ function deepCopy (subject) { //dentro del () ponemos el obj1 que es el que quer
     return copySubject;
 }
 
+//Métodos estáticos
+
+// class SuperObject {
+
+    // static isObject (subject) { //funcion para validad si el objeto es un objeto
+    //     return typeof subject == "object";
+    // }
+
+    // static deepCopy(subject) {
+    //     let copySubject;
+
+    //     const subjectIsArray = isArray(subject);
+    //     const subjectIsObject = isObject(subject);
+
+    //     if(subjectIsArray) {
+    //         copySubject = []; //si es una rray le ponemos los []
+    //     } else if (subjectIsObject) {
+    //         copySubject = {};// si es un objeto le ponemos {}
+    //     } else {
+    //         return subject;//si no es ni objeto ni array me lo devuelve tal cual era
+    //     }
+
+    //     for (key in subject) { //key es el valor, la asignación y con este ciclo loq ue hacemos es llevar a la función deepCopy lo valores dentro del subject para que valide si son arrays u objetos y que los muestre y así poder tener estos objetos y arrays a la vista
+    //         const keyIsObject = isObject(subject[key]);
+
+    //         if (keyIsObject) {
+    //             copySubject[key] = deepCopy(subject[key]);
+    //         } else {
+    //             if (subjectIsArray) {
+    //                 copySubject.push(subject[key]);
+    //             } else {
+    //                 copySubject[key] = subject 
+    //             }
+    //         }
+    //     }
+
+    //     return copySubject;
+    // } 
+// }
+
+//Métodos estáticos desde un prototipo
+
+function SuperObject () {}
+SuperObject.isObject = function (subject){
+    return typeof subject == "object";
+}
+SuperObject.deepCopy = function (subject){
+    let copySubject;
+
+    const subjectIsArray = isArray(subject);
+    const subjectIsObject = isObject(subject);
+
+    if(subjectIsArray) {
+        copySubject = []; //si es una rray le ponemos los []
+    } else if (subjectIsObject) {
+        copySubject = {};// si es un objeto le ponemos {}
+    } else {
+        return subject;//si no es ni objeto ni array me lo devuelve tal cual era
+    }
+
+    for (key in subject) { //key es el valor, la asignación y con este ciclo loq ue hacemos es llevar a la función deepCopy lo valores dentro del subject para que valide si son arrays u objetos y que los muestre y así poder tener estos objetos y arrays a la vista
+        const keyIsObject = isObject(subject[key]);
+
+        if (keyIsObject) {
+            copySubject[key] = deepCopy(subject[key]);
+        } else {
+            if (subjectIsArray) {
+                copySubject.push(subject[key]);
+            } else {
+                copySubject[key] = subject 
+            }
+        }
+    }
+
+    return copySubject;
+} ;
+
+
 //abstracción y encapsulamiento
 
 //objeto literal
