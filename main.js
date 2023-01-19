@@ -213,23 +213,40 @@ function Student({ ////borramos el create del LearningPath para los métodos pú
     this.name = name;
     this.email = email;
     this.age = age;
+    this.approvedCourses = approvedCourses;
     this.socialMedia = {
         twitter,
         instagram,
         facebook,
         github,
     };
-    this.approvedCourses = approvedCourses;
     // this.learningPath = learningPath;
 
+    const private = {
+        "_learningPaths": [],
+    };
 
-    if(isArray(learningPaths)){
+    //le mandamos Student.prototype porque es en el prototype donde vamos a crear los get y set
+    Object.defineProperty(this, "learningPaths", { //como lo hemos metrido dentro del prototipo podemos dejar de llamarlo ' Student.prototype ' y tan solo poner this ya que hace referencia al propio prototype
+        get() {
+            return private["_learningPaths"];
+        },
+        set(newLp){
+            if(newLp instanceof learningPath) {
+                private["_learningPaths"].push(newLp);
+            } else {
+                console.warn("Some Lps is not an instance of LearningPath prototype");
+            }
+        },
+    });
+
+    // if(isArray(learningPaths)){
         this._learningPaths = []; //_ porque queremos hacerlo privado
         for (learningPathIndex in learningPaths){
             this.learningPaths = learningPaths[learningPathIndex];
         }
         
-    };
+    // };
 
     // for (learningPathIndex in learningPaths){
     //     if(learningPaths[learningPathIndex] instanceof learningPath) {
@@ -305,20 +322,20 @@ function Student({ ////borramos el create del LearningPath para los métodos pú
     // return public;
 };
 
-//le mandamos Student.prototype porque es en  el prototype donde vamos a crear los get y set
-Object.defineProperty(Student.prototype, "learningPaths", {
-    get() {
-        return this._learningPaths;
-    },
-    set(newLp){
-        if(learningPaths[learningPathIndex] instanceof learningPath) {
-            this._learningPaths.push(newLp);
-
-        } else {
-            console.warn("Some Lps is not an instance of LearningPath prototype");
-        }
-    },
-})
+//Omitimos esta y lo introducimos dentro de student
+// //le mandamos Student.prototype porque es en el prototype donde vamos a crear los get y set
+// Object.defineProperty(Student.prototype, "learningPaths", {
+//     get() {
+//         return this._learningPaths;
+//     },
+//     set(newLp){
+//         if(newLp instanceof learningPath) {
+//             this._learningPaths.push(newLp);
+//         } else {
+//             console.warn("Some Lps is not an instance of LearningPath prototype");
+//         }
+//     },
+// });
 
 const escuelaWeb = new learningPath({ name: "Escuela de WebDev" });
 const escuelaData = new learningPath({ name: "Escuela de Data Science" });
